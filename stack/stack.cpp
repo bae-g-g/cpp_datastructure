@@ -87,12 +87,5 @@ public:
 
 int main(){
 
-    stack<std::string> s(5);
-
-    s.push("hello");
-
-    std::cout<<s.peek();
-
-    return 0;
 
 }
