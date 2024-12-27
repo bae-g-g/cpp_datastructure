@@ -18,7 +18,7 @@ public:
         this->arr = new T[size];
     }
     //디폴트 생성자
-    stack():size(20),top(-1){
+    stack():size(50),top(-1){
         this -> arr = new T[ this->size ]; 
     }
     ~stack(){
@@ -87,12 +87,46 @@ public:
 
 int main(){
 
-    stack<std::string> s(5);
+ 
+    int repeat_num;
+    std::cin>>repeat_num;
+    
 
-    s.push("hello");
+    for(int i = 0; i<repeat_num; i++){
+        
+        stack<char> my_stack;
 
-    std::cout<<s.peek();
+        std::string input;
+        std::cin >> input;
+        
+        bool vaild = true;
 
-    return 0;
+        for(char j : input){
+            if ( j == '(' ){
+                
+                my_stack.push('(');
+            }
+            else{
+
+                if(my_stack.isempty()){
+                    vaild = false;
+                    break;
+
+                }
+                else{
+                    my_stack.pop();
+                }
+            }
+
+        }
+        
+        if(vaild == false || my_stack.isempty() == false){
+            std :: cout << "NO\n";
+        }
+        else{
+            std :: cout << "YES\n";
+        }
+
+    }
 
 }
