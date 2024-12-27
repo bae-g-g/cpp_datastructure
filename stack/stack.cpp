@@ -1,22 +1,23 @@
 #include  <iostream>
 
+template <typename T>
 class stack{
 
 private:
     int top;
     int size;
-    int *arr;
+    T *arr;
 
 public:
     //매개변수 생성자
     stack(int size){
         this->size = size;
         this->top = -1;
-        this->arr = new int[size];
+        this->arr = new T[size];
     }
     //디폴트 생성자
     stack():size(20),top(-1){
-        this -> arr = new int[ this->size ]; 
+        this -> arr = new T[ this->size ]; 
     }
     ~stack(){
         delete[] this->arr;
@@ -42,10 +43,10 @@ public:
         }
     }
 
-    void push(int data){
+    void push(T data){
 
         if( this->isfull() ){
-            std :: cout << "full\n";
+            throw std::out_of_range("Stack is full");
         }
         else{
             this->top++;
@@ -55,25 +56,24 @@ public:
     }
 
 
-    int pop(){
+    T pop(){
         if( this -> isempty() ){
-            std:: cout << "empty\n";
-            return -1;
+            throw std::out_of_range("Stack is empty");
+            
         }
         else{
-            int result = this -> arr[ this -> top]; 
+            T result = this -> arr[ this -> top]; 
             this -> top --;
             return result;
 
         }
     }
 
-    
-    int peek(){
+
+    T peek(){
 
         if( this->isempty() ){
-            
-            return -1;
+            throw std::out_of_range("Stack is empty");
         }
         else{
 
@@ -85,7 +85,11 @@ public:
 
 int main(){
 
-    stack s(5);
+    stack<std::string> s(5);
+
+    s.push("hello");
+
+    std::cout<<s.peek();
 
     return 0;
 
