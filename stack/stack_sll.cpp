@@ -47,6 +47,9 @@ class stack{
         }
 
         ~stack(){
+            while(this -> isempty()){
+                this -> pop();
+            }
         }
 
         bool isempty(){

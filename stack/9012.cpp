@@ -1,7 +1,7 @@
 #include  <iostream>
 
 
-//자료형 일반화화
+//자료형 일반화
 template <typename T> 
 class stack{
 
