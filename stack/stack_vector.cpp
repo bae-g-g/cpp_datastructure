@@ -7,6 +7,7 @@ struct buliding
     long long sum;
 };
 
+
 int fn(std::vector<buliding>& _stack, long long _input, long long& _ans){
    
     if( _stack.empty() == true || _stack.back().hight > _input ){
