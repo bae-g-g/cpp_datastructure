@@ -1,10 +1,12 @@
 #include <iostream>
 #include <vector>
 /*
-그래프(dfs, bfs)
+그래프
 - 행렬
 - 리스트 
 - 리스트(Vector)
+- 트리
+- 해쉬
 
 */
 
@@ -333,6 +335,22 @@ int main(){
 
 
 
+GRAPH_VECTOR graph;
+int vertex_num;
+int edge_num;
+int start_vertex;
+std::cin>>vertex_num;
+std::cin>>edge_num;
+std::cin>> start_vertex;
+
+for(int i= 0; i<edge_num; i++){
+    int input_vertex;
+    int input_edge;
+    std::cin >> input_vertex;
+    std::cin >> input_edge;
+    graph.Add_Edge_Two_Way(input_vertex,input_edge);
+
+}
 
 
 }   
