@@ -1,160 +1,181 @@
 #include <iostream>
-
-
-/*
-입력 받은 정수를 문자열로 쪼갠다
-
-이후에 중복이 있는값 slection sort 진행 <- 아님 시발
-
-1288
-
-1 - 8281 - big
-2 - 8821 - big
-------
-1 - 8218 - small
-2 - 8812 - samll
-
-================
-2188
-
-1 - 8182 - big
-2 - 8812 small
--------
-1 - 8128  -small
-2 - 8821 big
-
-15599
-
-
-95591
-
-99551
-----
+#include <set>
 
 
 
 
-backtraking
-
-index  <- comp;
-for(int i = 0 ; i< size-1; i++){
-    for(int j = i+1; j<size; j++){
-        swap(i,j);
-        eche value comp  
-        
-        compli -> max  push (  )
-        swap(j,i);   
-    }
-}
-
-사이즈/2 만큼 교환을 하면 최대값을 찾을 수 있음
--> 1234
--> 4231
--> 4321  
-
-
-----------------------------------------
-same value arr[10] ={ 0 };
-same_value_arr[ arr[i] ]++;
-if(samevaluearr[i]) > 1 
-samevalue exist = true;
-
-
-
-swap_value = swap_value - same_value_num;
-
-
-if( swap_valu > size ) n-1
-=  if (same value exist) 최대값 
-=  if ( same value non ) 최대값  <-> 그 다음 최대값
-
-
-
-else( swap_value < size)
--> if(same value exist) greed;
--> if(same value non ) -> backtraking (samevalue)
-
-
-
-------------
-
-
-
-*/
-
-
-class MyClass{
+class Myclass{
 
 private:
-    int arr_num[6] = {0};
-    int size = 0;
-    int int_num;
-    int swap_num;
 
+int input_num;
+int swap_num;
+int max_num;
+int size;
 public:
 
-    int arr_to_num(int* arr){
-        int ans = 0;
-        int temp = 1;
-        for(int i =0; i<size; i++){
-            ans += arr_num[size-1-i]*temp;
-            temp *= 10;
-        }
-        return ans;
+int arr_to_num(int* arr){
+    int ans = 0;
+    int temp = 1;
+    for(int i =0 ; i<size; i++){
+        ans += arr[size -1 -i]*temp;
+        temp *= 10;
     }
+    return ans;
+}
+int* num_to_arr(int num,int* arr){
     
-    void num_to_arr(int* arr, int num){
+    for(int i =0; i<size; i++){
+        arr[size -1 -i] = num%10;
+        num /=10;
+    }
 
-        for(int i =0 ; i<size; i++){
-            arr[size -1 -i] = num%10;
-            num = num/10;
+}
+
+void szie_cheek(){
+    int temp = 10;
+    size = 1;
+    while(1){
+        if(input_num/temp == 0) return;
+        temp*=10;
+        size++;
+    }    
+}
+
+void max_cheek(){
+    int temp_arr[6] = {0};
+    num_to_arr(input_num,temp_arr);
+    int max_arr[6] = {0};
+    for(int i = 0 ; i<size; i++){
+        int max = 0;
+        int max_index =0 ;
+        for(int j= 0; j<size; j++){
+            if(temp_arr[j]> max){
+                max_index = j;
+                max = temp_arr[j];
+            }
         }
+        max_arr[i] = max;
+        temp_arr[max_index] = -1;
 
     }
-    void size_cheek(int num){
-        if(num == 0){
-            return ;
+    max_num = arr_to_num(max_arr);
+}
+
+void input(){
+
+    std::cin>>input_num;
+    std::cin>>swap_num;
+    szie_cheek();
+    max_cheek();
+
+
+}
+
+void swap(int* arr,int id1,int id2){
+    int temp = arr[id1];
+    arr[id1] = arr[id2];
+    arr[id2] = temp;
+}
+
+void dfs(int dfs_swap_num,int dfs_num, std::set<std::pair<int,int>> myset, int& max,int& max_swap_num){
+   
+    if(dfs_num > max ){
+       max = dfs_num;
+       max_swap_num = dfs_swap_num;          
+    }
+    if(dfs_num == max){
+        if(max_swap_num < dfs_swap_num){
+            max_swap_num = dfs_swap_num;
+        }
+    }
+
+    if(dfs_swap_num == 0) return ;
+
+    // if(max == max_num){
+    //     return;
+    // }
+
+    dfs_swap_num--;
+    int temp_arr[6] = { 0 };
+    num_to_arr(dfs_num,temp_arr);
+    for(int i =0; i< size - 1; i++){
+        for(int j = i; j<size; j++){
+            if(myset.find({i,j}) == myset.end() ){
+                myset.insert({i,j});
+                swap(temp_arr,i,j);
+                int temp_num = arr_to_num(temp_arr);
+                
+                    if(temp_num >= dfs_num){
+    
+                        dfs(dfs_swap_num,temp_num,myset,max,max_swap_num);
+                
+                    }
+                        
+                
+                
+                swap(temp_arr,i,j);
+            }
+            
+        }
+    }
+
+}
+
+void fn(){
+    std::set<std::pair<int,int>> myset;
+    int max = 0;
+    int cur_swap_num = 0;
+
+    dfs(swap_num,input_num,myset,max,cur_swap_num);
+    std::cout<<max<<std::endl;
+    std::cout<<cur_swap_num<<std::endl;
+    
+    if(cur_swap_num == 0){
+        std::cout<<max<<std::endl;
+    }
+    else{
+        int count_arr[10]= {0};
+        int temp_arr[6] ={0};
+        int flag = 0;
+        num_to_arr(max,temp_arr);
+        for(int i =0; i<size; i++){
+            count_arr[temp_arr[i]]++;
+            if(count_arr[temp_arr[i]]>1){
+                std::cout<<max<<std::endl;
+                return ;
+            }
+        }
+        if(cur_swap_num%2 == 0){
+            std::cout<<max<<std::endl;
         }
         else{
-            size++;
+            swap(temp_arr,size-1,size-2);
+            std::cout<<arr_to_num(temp_arr)<<std::endl;
         }
-        int temp = 1;
-
-        for(int i =0 ; i<6; i++){
-            if( temp <= num || temp*10 > num ){
-                return;
-            }
-            else{
-                size++;
-                temp *=10;
-            }
-        }
-    }
-
-    void input(){
-        std::cin >> int_num;
-        std::cin >> swap_num;
-        size_cheek(int_num);
-        num_to_arr(arr_num,int_num);
-    }
-
-    int fn(){
+        
 
 
-        if( ){
-
-        }
-        else{
-
-        }
 
     }
 
+}
 
 
 };
 
 
 int main(){
+
+    int test_case;
+    std::cin>>test_case;
+    for(int i = 1 ; i<=test_case; i++){
+        std::cout << "#"<<i<< " ";
+        Myclass a;
+        a.input();
+        a.fn();
+    }
+
+
 
 }
