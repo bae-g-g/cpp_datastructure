@@ -1,7 +1,10 @@
 #include <iostream>
 #include <set>
 
-
+/*
+추후에
+dfs진행시 최대값을 우선으로 탐색하는 방식으로 작성
+*/
 
 
 class Myclass{
@@ -79,31 +82,36 @@ void swap(int* arr,int id1,int id2){
 }
 
 void dfs(int dfs_swap_num,int dfs_num, std::set<std::pair<int,int>> myset, int& max,int& max_swap_num){
-   
-    if(dfs_num > max ){
+
+    if(dfs_swap_num == 0) return ; // 모든 시행울 다 했다면 끝
+
+    
+
+    if(dfs_num > max ){ // 현재실행 기준 더 큰 경우 그 값으로 초기화한다.
        max = dfs_num;
        max_swap_num = dfs_swap_num;          
     }
-    if(dfs_num == max){
+    if(dfs_num == max){ //dfs실행중 최대겂을 이미 찾았지만, 시행수가 더 적은 경우를 찾았다면 
         if(max_swap_num < dfs_swap_num){
             max_swap_num = dfs_swap_num;
         }
     }
 
-    if(dfs_swap_num == 0) return ;
-
-    // if(max == max_num){
-    //     return;
-    // }
 
     dfs_swap_num--;
-    int temp_arr[6] = { 0 };
+
+    int temp_arr[6] = { 0 }; //swap의 편의를 위해서 arr형태로 
     num_to_arr(dfs_num,temp_arr);
+
     for(int i =0; i< size - 1; i++){
         for(int j = i; j<size; j++){
-            if(myset.find({i,j}) == myset.end() ){
+            if(myset.find({i,j}) != myset.end() || myset.find({j,i}) != myset.end() ){
+
+            }
+            else{
                 myset.insert({i,j});
                 swap(temp_arr,i,j);
+
                 int temp_num = arr_to_num(temp_arr);
                 
                     if(temp_num >= dfs_num){
@@ -112,10 +120,11 @@ void dfs(int dfs_swap_num,int dfs_num, std::set<std::pair<int,int>> myset, int& 
                 
                     }
                         
-                
-                
+
+
                 swap(temp_arr,i,j);
             }
+
             
         }
     }
@@ -128,9 +137,7 @@ void fn(){
     int cur_swap_num = 0;
 
     dfs(swap_num,input_num,myset,max,cur_swap_num);
-    std::cout<<max<<std::endl;
-    std::cout<<cur_swap_num<<std::endl;
-    
+    std::cout <<cur_swap_num<<std::endl;
     if(cur_swap_num == 0){
         std::cout<<max<<std::endl;
     }
@@ -179,3 +186,13 @@ int main(){
 
 
 }
+
+
+/*
+
+123456
+
+
+
+
+*/
